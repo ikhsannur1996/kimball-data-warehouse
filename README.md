@@ -1,71 +1,83 @@
 # Delivery Order System SQL Schema
 
+## Overview
+
 This document outlines the SQL Data Definition Language (DDL) to create a table for a delivery order system, along with SQL Data Manipulation Language (DML) statements to insert sample data and update records in the table. Each column in the table is explained in detail.
 
 ## SQL DDL to Create Table
 
+Below is the SQL code snippet used to create the `delivery_orders` table:
+
 ```sql
-CREATE TABLE DeliveryOrders (
-    OrderID INT PRIMARY KEY,
-    CustomerName VARCHAR(100) NOT NULL,
-    DeliveryAddress VARCHAR(255) NOT NULL,
-    ContactNumber VARCHAR(15) NOT NULL,
-    OrderDate DATE NOT NULL,
-    DeliveryDate DATE,
-    ItemDescription VARCHAR(255) NOT NULL,
-    Quantity INT NOT NULL CHECK (Quantity > 0),
-    TotalPrice DECIMAL(10, 2) NOT NULL CHECK (TotalPrice >= 0),
-    Status VARCHAR(50) NOT NULL,
+CREATE TABLE delivery_orders (
+    order_id INT PRIMARY KEY,
+    customer_name VARCHAR(100) NOT NULL,
+    delivery_address VARCHAR(255) NOT NULL,
+    contact_number VARCHAR(15) NOT NULL,
+    order_date DATE NOT NULL,
+    delivery_date DATE,
+    item_description VARCHAR(255) NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    total_price DECIMAL(10, 2) NOT NULL CHECK (total_price >= 0),
+    status VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
 ## Explanation of Columns
 
-1. **OrderID** (`INT`):
-   - **Description**: A unique identifier for each delivery order.
-   - **Constraints**: This is the primary key of the table, ensuring that each order can be uniquely identified.
+Each column in the `delivery_orders` table has specific constraints and descriptions as follows:
 
-2. **CustomerName** (`VARCHAR(100)`):
-   - **Description**: The name of the customer placing the order.
-   - **Constraints**: This field cannot be null.
+1. **order_id**
+   - **Description:** A unique identifier for each delivery order.
+   - **Constraints:** This is the primary key of the table, ensuring that each order can be uniquely identified.
 
-3. **DeliveryAddress** (`VARCHAR(255)`):
-   - **Description**: The address where the order should be delivered.
-   - **Constraints**: This field cannot be null.
+2. **customer_name**
+   - **Description:** The name of the customer placing the order.
+   - **Constraints:** This field cannot be null.
 
-4. **ContactNumber** (`VARCHAR(15)`):
-   - **Description**: The phone number of the customer for contact purposes.
-   - **Constraints**: This field cannot be null.
+3. **delivery_address**
+   - **Description:** The address where the order should be delivered.
+   - **Constraints:** This field cannot be null.
 
-5. **OrderDate** (`DATE`):
-   - **Description**: The date when the order was placed.
-   - **Constraints**: This field cannot be null.
+4. **contact_number**
+   - **Description:** The phone number of the customer for contact purposes.
+   - **Constraints:** This field cannot be null.
 
-6. **DeliveryDate** (`DATE`):
-   - **Description**: The expected or actual date when the order will be delivered.
-   - **Constraints**: This field can be null if the delivery date is not yet determined.
+5. **order_date**
+   - **Description:** The date when the order was placed.
+   - **Constraints:** This field cannot be null.
 
-7. **ItemDescription** (`VARCHAR(255)`):
-   - **Description**: A description of the item(s) ordered.
-   - **Constraints**: This field cannot be null.
+6. **delivery_date**
+   - **Description:** The expected or actual date when the order will be delivered.
+   - **Constraints:** This field can be null if the delivery date is not yet determined.
 
-8. **Quantity** (`INT`):
-   - **Description**: The number of items ordered.
-   - **Constraints**: This field cannot be null and must be greater than zero.
+7. **item_description**
+   - **Description:** A description of the item(s) ordered.
+   - **Constraints:** This field cannot be null.
 
-9. **TotalPrice** (`DECIMAL(10, 2)`):
-   - **Description**: The total price of the order, calculated based on quantity and item price.
-   - **Constraints**: This field cannot be null and must be zero or greater.
+8. **quantity**
+   - **Description:** The number of items ordered.
+   - **Constraints:** This field cannot be null and must be greater than zero.
 
-10. **Status** (`VARCHAR(50)`):
-    - **Description**: The current status of the order (e.g., Pending, Delivered, In Transit).
-    - **Constraints**: This field cannot be null.
+9. **total_price**
+   - **Description:** The total price of the order, calculated based on quantity and item price.
+   - **Constraints:** This field cannot be null and must be zero or greater.
+
+10. **status**
+    - **Description:** The current status of the order (e.g., Pending, Delivered, In Transit).
+    - **Constraints:** This field cannot be null.
+
+11. **created_at**
+    - **Description:** Timestamp indicating when the entry was added into this database.
+    - **Default Value:** Automatically set by default timestamp function provided by MySQL server at time point it gets inserted into DBMS environment.
 
 ## SQL DML to Insert Sample Data
 
+Below are some examples demonstrating how one might go about inserting various types of entries within our newly defined structure:
+
 ```sql
-INSERT INTO DeliveryOrders (OrderID, CustomerName, DeliveryAddress, ContactNumber, OrderDate, DeliveryDate, ItemDescription, Quantity, TotalPrice, Status) VALUES
+INSERT INTO delivery_orders (order_id, customer_name, delivery_address, contact_number, order_date, delivery_date, item_description, quantity, total_price, status) VALUES
 (1, 'John Doe', '123 Elm St, Cityville', '123-456-7890', '2024-11-01', '2024-11-03', 'Wireless Mouse', 2, 40.00, 'Delivered'),
 (2, 'Jane Smith', '456 Oak St, Townsville', '987-654-3210', '2024-11-02', '2024-11-04', 'Bluetooth Headphones', 1, 60.00, 'In Transit'),
 (3, 'Alice Johnson', '789 Pine St, Villagetown', '555-123-4567', '2024-11-03', '2024-11-05', 'USB-C Charger', 3, 30.00, 'Pending'),
@@ -75,20 +87,20 @@ INSERT INTO DeliveryOrders (OrderID, CustomerName, DeliveryAddress, ContactNumbe
 
 ## SQL DML to Update Existing Records
 
-To update an existing record in the `DeliveryOrders` table (for example: changing the status of an order), you can use the following SQL statement:
+To update an existing record in the `delivery_orders` table (for example: changing the status of an order), you can use the following SQL statement:
 
 ```sql
-UPDATE DeliveryOrders
-SET Status = 'Delivered',
-    DeliveryDate = CURRENT_DATE
-WHERE OrderID = 3;
+UPDATE delivery_orders
+SET status = 'Delivered',
+    delivery_date = CURRENT_DATE
+WHERE order_id = 3;
 ```
 
 ### Explanation of Update Statement
 
 1. **SET Clause**:
-   - `Status`: Changes the status of the order to "Delivered".
-   - `DeliveryDate`: Sets the delivery date to today's date using `CURRENT_DATE`.
+   - `status`: Changes the status of the order to "Delivered".
+   - `delivery_date`: Sets the delivery date to today's date using `CURRENT_DATE`.
 
 2. **WHERE Clause**:
-   - Identifies which record(s) to update based on `OrderID`.
+   - Identifies which record(s) to update based on `order_id`.
