@@ -15,7 +15,8 @@ CREATE TABLE DeliveryOrders (
     ItemDescription VARCHAR(255) NOT NULL,
     Quantity INT NOT NULL CHECK (Quantity > 0),
     TotalPrice DECIMAL(10, 2) NOT NULL CHECK (TotalPrice >= 0),
-    Status VARCHAR(50) NOT NULL
+    Status VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
 
